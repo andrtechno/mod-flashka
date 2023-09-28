@@ -1,0 +1,26 @@
+{
+    "name": "panix/mod-flashka",
+    "description": "Module flashka",
+    "keywords": ["pixelion-cms", "flashka"],
+    "homepage": "https://github.com/andrtechno/mod-flashka",
+    "type": "pixelion-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "PIXELION CMS",
+            "email": "dev@pixelion.com.ua",
+            "homepage": "https://pixelion.com.ua"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2-queue": "2.x-dev"
+    },
+    "conflict": {
+        "panix/mod-forsage-studio": "*",
+    },
+    "autoload": {
+        "psr-4": {
+            "panix\\mod\\flashka\\": ""
+        }
+    }
+}
