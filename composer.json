@@ -16,7 +16,7 @@
         "yiisoft/yii2-queue": "2.x-dev"
     },
     "conflict": {
-        "panix/mod-forsage-studio": "*",
+        "panix/mod-forsage-studio": "*"
     },
     "autoload": {
         "psr-4": {
