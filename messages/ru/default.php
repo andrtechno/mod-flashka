@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'MODULE_NAME' => 'Forsage',
-    'MODULE_DESC' => 'Forsage',
+    'MODULE_NAME' => 'Flashka',
+    'MODULE_DESC' => 'Flashka',
     'CHANGES' => 'Изменения',
     'CATEGORIES_HIT' => 'Все остальное категории попадает в текущий раздел',
     'BUTTON_EXPORT' => 'Экспорт CSV поставщиков',

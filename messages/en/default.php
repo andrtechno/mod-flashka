@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'MODULE_NAME' => 'Forsage',
-    'MODULE_DESC' => 'Forsage',
+    'MODULE_NAME' => 'Flashka',
+    'MODULE_DESC' => 'Flashka',
     'CHANGES' => 'Changes',
     'CATEGORIES_HIT' => 'Everything else in the category falls into the current section',
     'BUTTON_EXPORT' => 'Export CSV suppliers',
