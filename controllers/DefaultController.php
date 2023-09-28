@@ -3,7 +3,7 @@
 namespace panix\mod\flashka\controllers;
 
 use Yii;
-use yii\base\Controller;
+use yii\web\Controller;
 use panix\mod\flashka\components\Flashka;
 use panix\mod\flashka\components\ProductByIdQueue;
 use yii\web\BadRequestHttpException;
@@ -21,7 +21,7 @@ class DefaultController extends Controller
 
     public function actionWebhook()
     {
-        $forsageClass = Yii::$app->getModule('flashka')->forsageClass;
+        $forsageClass = Yii::$app->getModule('flashka')->flashkaClass;
         $fs = new $forsageClass;
         $input = json_decode($fs->input, true);
 
@@ -37,6 +37,26 @@ class DefaultController extends Controller
         } else {
             Yii::info('Error input', 'flashka');
         }
+    }
+
+
+    public function actionGetSuppliers()
+    {
+        $result['success'] = 'true';
+        $list[] = [
+            'address' => 'Голубая 1614',
+            'company' => 'AAPR',
+            'exchange_rate' => 0.0,
+            'id' => 173
+        ];
+        $list[] = [
+            'address' => 'Белая 1087',
+            'company' => 'ABA',
+            'exchange_rate' => 0.0,
+            'id' => 156
+        ];
+        $result['suppliers'] = $list;
+        return $this->asJson($result);
     }
 
 }

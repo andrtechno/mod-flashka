@@ -26,7 +26,8 @@ use panix\mod\shop\models\Supplier;
  */
 class Flashka extends Component
 {
-    const URL = 'https://plus.fleshka.od.ua:81/api/';
+    //const URL = 'https://fleshka.od.ua/api/';
+    const URL = 'http://pg-store.loc/flashka/api/';
     /**
      * @var string
      */
@@ -1182,7 +1183,6 @@ class Flashka extends Component
      */
     public function getSupplierProductIds(int $supplier_id, $params = [])
     {
-
         $response = $this->conn_curl('get_products_by_supplier/'.$supplier_id, $params);
         if (isset($response['success'])) {
             if ($response['success'] == 'true') {
@@ -1191,7 +1191,7 @@ class Flashka extends Component
                 }
             }
         }
-        self::log('Error: ' . __FUNCTION__ . '(' . $supplier_id . ') - ');
+        self::log('Error: ' . __FUNCTION__ . '(' . $supplier_id . ')');
         return false;
     }
 
@@ -1276,6 +1276,7 @@ class Flashka extends Component
     public function getSuppliers()
     {
         $response = $this->conn_curl('get_suppliers');
+
         if (isset($response)) {
             if ($response['success'] == 'true') {
                 return $response['suppliers'];
@@ -1321,6 +1322,7 @@ class Flashka extends Component
     private function conn_curl($method, $params = [])
     {
         $params['token'] = $this->apiKey;
+
         $client = new Client(['baseUrl' => self::URL.$method]);
         $response = $client->createRequest()
             // ->setFormat(Client::FORMAT_JSON)

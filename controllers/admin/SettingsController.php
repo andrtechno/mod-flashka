@@ -83,17 +83,17 @@ class SettingsController extends AdminController
      */
     public function actionExport()
     {
-        $forsageClass = Yii::$app->getModule('flashka')->forsageClass;
-        $fs = new $forsageClass;
+        $flashkaClass = Yii::$app->getModule('flashka')->flashkaClass;
+        $fs = new $flashkaClass;
         $suppliers = $fs->getSuppliers();
 
         foreach ($suppliers as $supplier) {
-            $list[] = [$supplier['company'], str_replace('+', '', CMS::phoneFormat($supplier['phone'])), $supplier['phone'], $supplier['email'], $supplier['address']];
+            $list[] = [$supplier['id'], $supplier['company'], $supplier['address'], $supplier['exchange_rate']];
         }
         asort($list);
         $path = Yii::getAlias('@runtime/') . 'suppliers_contact.csv';
         $fp = fopen($path, 'w');
-        fputcsv($fp, ['Имя', 'Телефон', 'Телефон формат', 'E-mail', 'Адрес'], ';');
+        fputcsv($fp, ['ID', 'Название', 'Адрес', 'Курс'], ';');
         foreach ($list as $fields) {
             fputcsv($fp, $fields, ';');
         }
@@ -111,8 +111,8 @@ class SettingsController extends AdminController
 
     public function actionUpdate($id)
     {
-        $forsageClass = Yii::$app->getModule('flashka')->forsageClass;
-        $fs = new $forsageClass;
+        $flashkaClass = Yii::$app->getModule('flashka')->flashkaClass;
+        $fs = new $flashkaClass;
         $product = $fs->getProduct($id);
         if ($product) {
             $response = $product->execute();

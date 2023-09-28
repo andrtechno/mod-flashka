@@ -14,7 +14,7 @@ class ProductIdQueue extends BaseObject implements JobInterface
 
     public function execute($queue)
     {
-        $forsageClass = Yii::$app->getModule('flashka')->forsageClass;
+        $forsageClass = Yii::$app->getModule('flashka')->flashkaClass;
         $fs = new $forsageClass;
         $count = count($this->product_ids);
         $i = 0;

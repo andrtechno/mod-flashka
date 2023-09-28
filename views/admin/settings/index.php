@@ -13,7 +13,7 @@ use yii\web\View;
 
 $form = ActiveForm::begin(['id' => 'forsage-form']);
 $types = ArrayHelper::map(ProductType::find()->all(), 'id', 'name');
-$categories = $model->getCategories(9);
+$categories = []; //$model->getCategories(9);
 ?>
 
 
@@ -31,7 +31,7 @@ $categories = $model->getCategories(9);
                 'active' => true,
                 'options' => ['class' => 'flex-sm-fill text-center nav-item'],
             ];
-            $tabs[] = [
+            /*$tabs[] = [
                 'label' => $model::t('TAB_SHOES'),
                 'content' => $this->render('_shoes', ['form' => $form, 'model' => $model, 'types' => $types]),
                 'headerOptions' => [],
@@ -48,7 +48,7 @@ $categories = $model->getCategories(9);
                 'content' => $this->render('_bags', ['form' => $form, 'model' => $model, 'types' => $types, 'categories' => $categories]),
                 'headerOptions' => [],
                 'options' => ['class' => 'flex-sm-fill text-center nav-item'],
-            ];
+            ];*/
 
             echo \panix\engine\bootstrap\Tabs::widget([
                 //'encodeLabels'=>true,

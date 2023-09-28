@@ -14,7 +14,6 @@ class SettingsForm extends SettingsModel
 
     public $out_stock_delete;
     public $apikey;
-    public $hook_key;
     public $clothes_type;
     public $boots_type;
     public $bags_type;
@@ -34,14 +33,13 @@ class SettingsForm extends SettingsModel
     public function rules()
     {
         return [
-            [['hook_key', 'apikey', 'brand', 'product_name_tpl'], "required"],
+            [['apikey', 'brand', 'product_name_tpl'], "required"],
             //[['product_related_bilateral', 'group_attribute', 'smart_bc', 'smart_title'], 'boolean'],
             [['boots_type', 'clothes_type', 'accessories_type', 'structure_shoes', 'structure_clothes', 'structure_bags', 'structure_accessories'], 'integer'],
             //[['boots_type', 'clothes_type', 'bags_type', 'accessories_type', 'categories_shoes'], 'default'],
-            [['apikey', 'hook_key', 'categories_clothes', 'categories_bags', 'categories_shoes', 'product_name_tpl'], 'string'],
+            [['apikey', 'categories_clothes', 'categories_bags', 'categories_shoes', 'product_name_tpl'], 'string'],
             [['out_stock_delete', 'brand', 'tm'], 'boolean'],
             ['apikey', 'match', 'pattern' => "/^[a-zA-Z0-9\._\-]+$/u"],
-            ['hook_key', 'match', 'pattern' => "/^[a-zA-Z0-9]+$/u", 'message' => 'Только буквы и цифры'],
             // [['categories_shoes'], 'safe'],
             [['bags_type'], 'default', 'value' => ''], //,'categories_shoes'
         ];
@@ -59,7 +57,6 @@ class SettingsForm extends SettingsModel
             'structure_bags' => 0,
             'out_stock_delete' => true,
             'apikey' => '',
-            'hook_key' => CMS::gen(50),
             'clothes_type' => '',
             'bags_type' => '',
             'boots_type' => '',
@@ -77,15 +74,15 @@ class SettingsForm extends SettingsModel
 
     public function __construct($config = [])
     {
-        $forsageClass = Yii::$app->getModule('flashka')->forsageClass;
-        $fs = new $forsageClass;
-        $this->_categories = $fs->getCategories(1);
+        $flashkaClass = Yii::$app->getModule('flashka')->flashkaClass;
+        $fs = new $flashkaClass;
+        //$this->_categories = $fs->getCategories(1);
         parent::__construct($config);
     }
 
     public function getCategories($parentId = 0)
     {
-        $forsageClass = Yii::$app->getModule('flashka')->forsageClass;
+        $forsageClass = Yii::$app->getModule('flashka')->flashkaClass;
         $fs = new $forsageClass;
 
         //$categories = Yii::$app->cache->get("forsage-categories".Yii::$app->language);

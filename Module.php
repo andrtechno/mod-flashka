@@ -32,9 +32,8 @@ class Module extends WebModule implements BootstrapInterface
     public function bootstrap($app)
     {
         $app->urlManager->addRules(
-            [
-                'flashka/webhook/<hook:\w+>' => 'flashka/default/webhook',
-            ],
+            ['flashka/api/get_suppliers' => 'flashka/default/get-suppliers'],
+            ['flashka/api/get_suppliers2' => 'flashka/default/get-supplier2s'],
             true
         );
     }
