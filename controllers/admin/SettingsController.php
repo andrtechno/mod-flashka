@@ -7,7 +7,7 @@ use panix\mod\flashka\components\Flashka;
 use panix\mod\flashka\components\ProductIdQueue;
 use Yii;
 use panix\engine\controllers\AdminController;
-use panix\mod\forsage\models\SettingsForm;
+use panix\mod\flashka\models\SettingsForm;
 
 class SettingsController extends AdminController
 {
@@ -24,7 +24,7 @@ class SettingsController extends AdminController
         $this->buttons = [
             [
                 'icon' => 'export',
-                'label' => Yii::t('forsage/default', 'BUTTON_EXPORT'),
+                'label' => Yii::t('flashka/default', 'BUTTON_EXPORT'),
                 'url' => ['export'],
                 'options' => ['class' => 'btn btn-success']
             ]
@@ -50,7 +50,7 @@ class SettingsController extends AdminController
 
     public function actionProducts()
     {
-        $fs = new ForsageStudio();
+        $fs = new Flashka();
         $start = strtotime(Yii::$app->request->get('start'));
         $end = strtotime(Yii::$app->request->get('end'));
         $changes = $fs->getChanges2($start, $end);
@@ -83,7 +83,7 @@ class SettingsController extends AdminController
      */
     public function actionExport()
     {
-        $forsageClass = Yii::$app->getModule('forsage')->forsageClass;
+        $forsageClass = Yii::$app->getModule('flashka')->forsageClass;
         $fs = new $forsageClass;
         $suppliers = $fs->getSuppliers();
 
@@ -102,7 +102,7 @@ class SettingsController extends AdminController
 
         if (file_exists($path)) {
             return Yii::$app->response->sendFile($path, 'suppliers_contact.csv'); //->send()
-            //return $this->redirect(['/admin/forsage/settings']);
+            //return $this->redirect(['/admin/flashka/settings']);
         } else {
             throw new \yii\web\NotFoundHttpException("{$path} is not found!");
         }

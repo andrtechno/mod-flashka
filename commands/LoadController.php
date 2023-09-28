@@ -11,7 +11,7 @@ use panix\mod\shop\models\ProductCategoryRef;
 use panix\mod\shop\models\ProductImage;
 use panix\mod\shop\models\Supplier;
 use Yii;
-use panix\mod\flashka\components\ForsageStudio;
+use panix\mod\flashka\components\Flashka;
 use panix\engine\CMS;
 use panix\engine\console\controllers\ConsoleController;
 use panix\mod\shop\models\Attribute;
@@ -38,7 +38,7 @@ class LoadController extends ConsoleController
 {
     public $tempDirectory = '@runtime/flashka';
     /**
-     * @var ForsageStudio
+     * @var Flashka
      */
     private $fs;
 

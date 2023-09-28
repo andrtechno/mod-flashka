@@ -26,7 +26,7 @@ use panix\mod\shop\models\Supplier;
  */
 class Flashka extends Component
 {
-
+    const URL = 'https://plus.fleshka.od.ua:81/api/';
     /**
      * @var string
      */
@@ -65,7 +65,7 @@ class Flashka extends Component
         if (!extension_loaded('intl')) {
             throw new ErrorException('PHP Extension intl not active.');
         }
-        $this->apiKey = Yii::$app->settings->get('flashka', 'apikey');
+        $this->apiKey = '10f18db0-75a1-4cc3-a1cf-4a6e3993e12b'; //Yii::$app->settings->get('flashka', 'apikey');
         parent::__construct($config);
     }
 
@@ -306,7 +306,7 @@ class Flashka extends Component
                         $eavkeys[] = $o;
                     }
                 } else {
-                    Yii::info('error eav by FID' . $model->forsage_id . ' ID ' . $model->id, 'forsage');
+                    Yii::info('error eav by FID' . $model->forsage_id . ' ID ' . $model->id, 'flashka');
                 }
             }
             $model->elastic($eavkeys);
@@ -988,13 +988,13 @@ class Flashka extends Component
                         $result['type_id'] = $this->settings->bags_type;
                         $result['unit'] = 4;//упаковка
                         if ($this->settings->structure_bags == 1) {
-                            $result['categories'][0] = Yii::$app->getModule('forsage')->bags_key;
+                            $result['categories'][0] = Yii::$app->getModule('flashka')->bags_key;
                             $result['categories'][1] = [
                                 'name_uk' => $sex,
                                 'name_ru' => $sex
                             ];
                         } elseif ($this->settings->structure_bags == 2) {
-                            $result['categories'][0] = Yii::$app->getModule('forsage')->bags_key;
+                            $result['categories'][0] = Yii::$app->getModule('flashka')->bags_key;
                             $result['categories'][1] = [
                                 'name_uk' => $sex,
                                 'name_ru' => $sex
@@ -1005,14 +1005,14 @@ class Flashka extends Component
                                 //'id' => $cat['id']
                             ];
                         } elseif ($this->settings->structure_bags == 3) {
-                            $result['categories'][0] = Yii::$app->getModule('forsage')->bags_key;
+                            $result['categories'][0] = Yii::$app->getModule('flashka')->bags_key;
                             $result['categories'][1] = [
                                 'name_uk' => $cat['name_uk'],
                                 'name_ru' => $cat['name_ru'],
                                 //'id' => $cat['id']
                             ];
                         } else {
-                            $result['categories'][0] = Yii::$app->getModule('forsage')->bags_key;
+                            $result['categories'][0] = Yii::$app->getModule('flashka')->bags_key;
                         }
                         //} elseif ($this->settings->accessories_type) { //аксессуары
                         //    $result['type_id'] = $this->settings->accessories_type;
@@ -1160,8 +1160,7 @@ class Flashka extends Component
             $params['quantity'] = 1;
         }
 
-        $url = "https://forsage-studio.com/api/get_products/";
-        $response = $this->conn_curl($url, $params);
+        $response = $this->conn_curl('get_products', $params);
 
         if (isset($response['success'])) {
             if ($response['success']) {
@@ -1183,8 +1182,8 @@ class Flashka extends Component
      */
     public function getSupplierProductIds(int $supplier_id, $params = [])
     {
-        $url = "https://forsage-studio.com/api/get_products_by_supplier/{$supplier_id}"; //&start_date={$date}&end_date={$date}
-        $response = $this->conn_curl($url, $params);
+
+        $response = $this->conn_curl('get_products_by_supplier/'.$supplier_id, $params);
         if (isset($response['success'])) {
             if ($response['success'] == 'true') {
                 if ($response['product_ids']) {
@@ -1196,7 +1195,7 @@ class Flashka extends Component
         return false;
     }
 
-    public function getCategories($with_descriptions = 1)
+    /*public function getCategories($with_descriptions = 1)
     {
         $url = "https://forsage-studio.com/api/get_categories";
         $params['with_descriptions'] = $with_descriptions;
@@ -1208,7 +1207,7 @@ class Flashka extends Component
         }
         self::log('Error: ' . __FUNCTION__ . ' - ' . $response['message']);
         return false;
-    }
+    }*/
 
     /**
      * Brands list
@@ -1218,8 +1217,7 @@ class Flashka extends Component
      */
     public function getBrands()
     {
-        $url = "https://forsage-studio.com/api/get_brands";
-        $response = $this->conn_curl($url, []);
+        $response = $this->conn_curl('get_brands', []);
         if (isset($response['success'])) {
             if ($response['success'] == 'true') {
                 return $response['brands'];
@@ -1236,9 +1234,8 @@ class Flashka extends Component
      */
     public function getRefbookCharacteristics()
     {
-        $url = "https://forsage-studio.com/api/get_refbook_characteristics";
         $params['with_descriptions'] = 1;
-        $response = $this->conn_curl($url, $params);
+        $response = $this->conn_curl('get_refbook_characteristics', $params);
         if (isset($response['success'])) {
             if ($response['success']) {
                 return $response['characteristics'];
@@ -1256,8 +1253,8 @@ class Flashka extends Component
      */
     public function getProduct(int $product_id)
     {
-        $url = "https://forsage-studio.com/api/get_product/{$product_id}";
-        $response = $this->conn_curl($url, ['with_descriptions' => 1]);
+
+        $response = $this->conn_curl('get_product/'.$product_id, ['with_descriptions' => 1]);
         if (isset($response['success'])) {
             if ($response['success'] == 'true') {
                 if (in_array($response['product']['category']['id'], Yii::$app->getModule('forsage')->excludeCategories)) {
@@ -1278,8 +1275,7 @@ class Flashka extends Component
      */
     public function getSuppliers()
     {
-        $url = "https://forsage-studio.com/api/get_suppliers";
-        $response = $this->conn_curl($url);
+        $response = $this->conn_curl('get_suppliers');
         if (isset($response)) {
             if ($response['success'] == 'true') {
                 return $response['suppliers'];
@@ -1297,13 +1293,13 @@ class Flashka extends Component
      */
     public function getChanges($start = 3600, $end = 0)
     {
-        $url = "https://forsage-studio.com/api/get_changes/";
+
         $params['start_date'] = $start;
         $params['end_date'] = $end;
         //$params['products'] = 'full';
         //$params['quantity'] = 1;
 
-        $response = $this->conn_curl($url, $params);
+        $response = $this->conn_curl('get_changes', $params);
         if ($response) {
             if (isset($response['success'])) {
                 if ($response['success'] == 'true') {
@@ -1322,10 +1318,10 @@ class Flashka extends Component
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\httpclient\Exception
      */
-    private function conn_curl($url, $params = [])
+    private function conn_curl($method, $params = [])
     {
         $params['token'] = $this->apiKey;
-        $client = new Client(['baseUrl' => $url]);
+        $client = new Client(['baseUrl' => self::URL.$method]);
         $response = $client->createRequest()
             // ->setFormat(Client::FORMAT_JSON)
             ->setMethod('GET')
@@ -1344,7 +1340,7 @@ class Flashka extends Component
 
     protected static function log($msg)
     {
-        Yii::info($msg, 'forsage');
+        Yii::info($msg, 'flashka');
     }
 
     /**

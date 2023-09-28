@@ -13,7 +13,7 @@ class Module extends WebModule implements BootstrapInterface
 
     public $icon = 'supplier';
     public $onlySuppliers = [];
-    public $forsageClass = '\panix\mod\flashka\components\Flashka';
+    public $flashkaClass = '\panix\mod\flashka\components\Flashka';
     public $excludeCategories = [];
     public $accessories_key = 'Accessories';
     public $bags_key = 'Bags';
