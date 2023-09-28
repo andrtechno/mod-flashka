@@ -34,10 +34,10 @@ class m200917_193214_flashka extends Migration
         $this->addColumn(ProductImage::tableName(), 'external_id', $this->integer()->null());
         $this->addColumn(Category::tableName(), 'path_hash', $this->string(32)->null());
 
-        //$this->createIndex('forsage_id', Product::tableName(), 'forsage_id');
-        //$this->createIndex('forsage_id', Supplier::tableName(), 'forsage_id');
-        //$this->createIndex('forsage_id', Attribute::tableName(), 'forsage_id');
-        //$this->createIndex('forsage_id', Brand::tableName(), 'forsage_id');
+        //$this->createIndex('external_id', Product::tableName(), 'external_id');
+        //$this->createIndex('external_id', Supplier::tableName(), 'external_id');
+        //$this->createIndex('external_id', Attribute::tableName(), 'external_id');
+        //$this->createIndex('external_id', Brand::tableName(), 'external_id');
         $this->loadSettings();
     }
 

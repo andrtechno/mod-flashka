@@ -84,7 +84,7 @@ class Flashka extends Component
         $props = $this->getProductProps($this->product);
 
         //$errors = (isset($props['error'])) ? true : false;
-        $model = Product::findOne(['forsage_id' => $this->product['id']]);
+        $model = Product::findOne(['external_id' => $this->product['id']]);
 
 
         if ($model) {
@@ -115,7 +115,7 @@ class Flashka extends Component
         if (!$model) {
             $model = new Product();
             $model->type_id = $props['type_id'];
-            $model->forsage_id = $this->product['id'];
+            $model->external_id = $this->product['id'];
             $model->created_at = $this->product['photosession_date'];
         } else {
             $model->updated_at = time();
@@ -198,14 +198,14 @@ class Flashka extends Component
         $model->main_category_id = $this->getCategoryByPath($props);
 
         if (isset($this->product['supplier']) && $model->isNewRecord) {
-            $supplier = Supplier::findOne(['forsage_id' => $this->product['supplier']['id']]);
+            $supplier = Supplier::findOne(['external_id' => $this->product['supplier']['id']]);
             if (!$supplier) {
                 $supplier = new Supplier();
                 $supplier->name = $this->product['supplier']['company'];
                 $supplier->email = $this->product['supplier']['email'];
                 $supplier->address = $this->product['supplier']['address'];
                 $supplier->phone = CMS::phoneFormat($this->product['supplier']['phone']);
-                $supplier->forsage_id = $this->product['supplier']['id'];
+                $supplier->external_id = $this->product['supplier']['id'];
                 $supplier->save(false);
             }
             $model->supplier_id = $supplier->id;
@@ -214,12 +214,12 @@ class Flashka extends Component
         //Записывать бренд как бренд или как поставщика.
         if ($this->settings->brand) {
             if (isset($this->product['supplier']) && $model->isNewRecord) {
-                $brand = Brand::findOne(['forsage_id' => $this->product['supplier']['id']]);
+                $brand = Brand::findOne(['external_id' => $this->product['supplier']['id']]);
                 if (!$brand) {
                     $brand = new Brand;
                     $brand->name_ru = $this->product['supplier']['company'];
                     $brand->name_uk = $this->product['supplier']['company'];
-                    $brand->forsage_id = $this->product['supplier']['id'];
+                    $brand->external_id = $this->product['supplier']['id'];
                     $brand->slug = CMS::slug($brand->name);
                     $brand->save(false);
 
@@ -231,12 +231,12 @@ class Flashka extends Component
             if (isset($this->product['brand'])) {
                 if (isset($this->product['brand']['name'])) {
                     if ($this->product['brand']['name'] != 'No brand') {
-                        $brand = Brand::findOne(['forsage_id' => $this->product['brand']['id']]);
+                        $brand = Brand::findOne(['external_id' => $this->product['brand']['id']]);
                         if (!$brand) {
                             $brand = new Brand;
                             $brand->name_ru = $this->product['brand']['name'];
                             $brand->name_uk = $this->product['brand']['name'];
-                            $brand->forsage_id = $this->product['brand']['id'];
+                            $brand->external_id = $this->product['brand']['id'];
                             $brand->slug = CMS::slug($brand->name);
                             $brand->save(false);
 
@@ -307,7 +307,7 @@ class Flashka extends Component
                         $eavkeys[] = $o;
                     }
                 } else {
-                    Yii::info('error eav by FID' . $model->forsage_id . ' ID ' . $model->id, 'flashka');
+                    Yii::info('error eav by FID' . $model->external_id . ' ID ' . $model->id, 'flashka');
                 }
             }
             $model->elastic($eavkeys);
@@ -357,7 +357,7 @@ class Flashka extends Component
         $image->filename = $pictureFileName;
         $image->alt_title = $model->name_uk;
         $image->created_at = $model->created_at;
-        //$image->forsage_id = $id;
+        //$image->external_id = $id;
 
         if (!$image->save()) {
             return false;
@@ -563,14 +563,14 @@ class Flashka extends Component
         foreach ($datas as $data) {
 
 
-            $attributeModel = Attribute::findOne(['forsage_id' => $data['id']]);
+            $attributeModel = Attribute::findOne(['external_id' => $data['id']]);
             if (!$attributeModel) {
                 $attributeModel = new Attribute();
                 $attributeModel->title_ru = (isset($data['descriptions'][0])) ? $data['descriptions'][0]['name'] : $data['name'];
                 $attributeModel->title_uk = (isset($data['descriptions'][1])) ? $data['descriptions'][1]['name'] : $data['name'];
                 $attributeModel->name = CMS::slug($data['name'], '_');
                 $attributeModel->type = Attribute::TYPE_DROPDOWN;
-                $attributeModel->forsage_id = $data['id'];
+                $attributeModel->external_id = $data['id'];
                 //if (count($attributeValues) > 1) {
                 //$attributeModel->use_in_filter = 1;
                 $attributeModel->select_many = 1;

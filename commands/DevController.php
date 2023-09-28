@@ -88,7 +88,7 @@ class DevController extends ConsoleController
                     $attribute->title_ru = $ref['name'];
                 }
 
-                $attribute->forsage_id = $ref['id'];
+                $attribute->external_id = $ref['id'];
                 $attribute->save(false);
 
                 /*foreach ($ref['values'] as $value) {
@@ -97,13 +97,13 @@ class DevController extends ConsoleController
                         if (isset($value['descriptions'][1])) {
                             $option->value = $value['descriptions'][0]['name'];
                             $option->value_uk = (isset($value['descriptions'][1])) ? $value['descriptions'][1]['name'] : $value['descriptions'][0]['name'];
-                            //$option->forsage_id = $value['id'];
+                            //$option->external_id = $value['id'];
                             $option->save(false);
 
                         } else {
                             $option->value = $value['value'];
                             $option->value_uk = $value['value'];
-                            //$option->forsage_id = $value['id'];
+                            //$option->external_id = $value['id'];
                             $option->save(false);
                         }
                     }
@@ -118,7 +118,7 @@ class DevController extends ConsoleController
         foreach ($products as $product) {
             if (!$product->getImages()->count()) {
                 //echo Url::to($product->getUrl()).PHP_EOL;
-                $ff = $this->fs->getProduct($product->forsage_id);
+                $ff = $this->fs->getProduct($product->external_id);
 
                 if ($ff) {
                     $ff->execute();
@@ -177,17 +177,17 @@ class DevController extends ConsoleController
             $db->createCommand()->truncateTable(Category::tableName())->execute();
 
 
-            if ($db->createCommand('SELECT * FROM ' . Product::tableName() . ' WHERE forsage_id IS NOT NULL')->query()->count()) {
-                $db->createCommand()->delete(Product::tableName(), ['not', ['forsage_id' => null]])->execute();
-                //$db->createCommand()->truncateTable(Product::tableName() . ' WHERE forsage_id IS NOT NULL')->execute();
+            if ($db->createCommand('SELECT * FROM ' . Product::tableName() . ' WHERE external_id IS NOT NULL')->query()->count()) {
+                $db->createCommand()->delete(Product::tableName(), ['not', ['external_id' => null]])->execute();
+                //$db->createCommand()->truncateTable(Product::tableName() . ' WHERE external_id IS NOT NULL')->execute();
             }
-            if ($db->createCommand('SELECT * FROM ' . Brand::tableName() . ' WHERE forsage_id IS NOT NULL')->query()->count()) {
-                //$db->createCommand()->truncateTable(Brand::tableName() . ' WHERE (forsage_id IS NOT NULL)')->execute();
-                $db->createCommand()->delete(Brand::tableName(), ['not', ['forsage_id' => null]])->execute();
+            if ($db->createCommand('SELECT * FROM ' . Brand::tableName() . ' WHERE external_id IS NOT NULL')->query()->count()) {
+                //$db->createCommand()->truncateTable(Brand::tableName() . ' WHERE (external_id IS NOT NULL)')->execute();
+                $db->createCommand()->delete(Brand::tableName(), ['not', ['external_id' => null]])->execute();
             }
-            if ($db->createCommand('SELECT * FROM ' . Supplier::tableName() . ' WHERE forsage_id IS NOT NULL')->query()->count()) {
+            if ($db->createCommand('SELECT * FROM ' . Supplier::tableName() . ' WHERE external_id IS NOT NULL')->query()->count()) {
                 //$db->createCommand()->truncateTable(Supplier::tableName())->execute();
-                $db->createCommand()->delete(Supplier::tableName(), ['not', ['forsage_id' => null]])->execute();
+                $db->createCommand()->delete(Supplier::tableName(), ['not', ['external_id' => null]])->execute();
             }
             $db->createCommand()->truncateTable('{{%shop__type_attribute}}')->execute();
             $db->createCommand()->truncateTable(ProductImage::tableName())->execute();

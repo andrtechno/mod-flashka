@@ -16,7 +16,6 @@ use panix\engine\CMS;
 use panix\engine\console\controllers\ConsoleController;
 use panix\mod\shop\models\Attribute;
 use panix\mod\shop\models\Product;
-use panix\mod\shop\components\ExternalFinder;
 use yii\base\ErrorException;
 use yii\console\ExitCode;
 use yii\console\widgets\Table;
@@ -31,7 +30,6 @@ set_time_limit(0);
 
 /**
  * Class LoadController
- * @property ExternalFinder $external
  * @package panix\mod\flashka\commands
  */
 class LoadController extends ConsoleController
@@ -61,7 +59,7 @@ class LoadController extends ConsoleController
     public function actionProduct($id, $before_delete = 0)
     {
         if ($before_delete) {
-            $p = Product::findOne(['forsage_id' => $id]);
+            $p = Product::findOne(['external_id' => $id]);
             $p->delete();
         }
         $product = $this->fs->getProduct($id);
@@ -109,7 +107,7 @@ class LoadController extends ConsoleController
     {
 
         $suppliers = $this->fs->getSuppliers();
-        $cur_suppliers = Supplier::find()->where('`forsage_id` IS NOT NULL')->all();
+        $cur_suppliers = Supplier::find()->where('`external_id` IS NOT NULL')->all();
 
         $forsage_list = [];
         $cur_forsage_list = [];
@@ -119,8 +117,8 @@ class LoadController extends ConsoleController
         }
 
         foreach ($cur_suppliers as $supplier) {
-            if ($supplier->forsage_id) {
-                $cur_forsage_list[] = $supplier->forsage_id;
+            if ($supplier->external_id) {
+                $cur_forsage_list[] = $supplier->external_id;
             }
         }
 
@@ -128,7 +126,7 @@ class LoadController extends ConsoleController
         $res2 = array_diff($cur_forsage_list, $forsage_list);
 
         foreach ($res2 as $supplier_id) {
-            $sup = Supplier::findOne(['forsage_id' => $supplier_id]);
+            $sup = Supplier::findOne(['external_id' => $supplier_id]);
             if ($sup) {
                 $products = Product::findAll(['supplier_id' => $sup->id]);
                 foreach ($products as $product) {

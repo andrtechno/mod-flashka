@@ -125,7 +125,7 @@ class DefaultController extends AdminController
     {
         $queue = Yii::$app->queue;
         $products = $this->fs->getSupplierProductIds($id, ['quantity' => 1]);
-        //$supplier = Supplier::findOne(['forsage_id' => $id]);
+        //$supplier = Supplier::findOne(['external_id' => $id]);
         if ($products) {
             $rows = [];
             Yii::$app->session->setFlash('success', Yii::t('flashka/default', 'RELOAD_SUPPLIER', [

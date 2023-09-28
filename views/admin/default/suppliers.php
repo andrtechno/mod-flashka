@@ -22,7 +22,7 @@ echo \panix\engine\grid\GridView::widget([
             'contentOptions' => ['class' => 'text-center'],
             'format' => 'raw',
             'value' => function ($model) {
-                $supplier = \panix\mod\shop\models\Supplier::findOne(['forsage_id' => $model['id']]);
+                $supplier = \panix\mod\shop\models\Supplier::findOne(['external_id' => $model['id']]);
                 if ($supplier) {
                     return Html::a($supplier->productsCount, ['/admin/shop/product', 'ProductSearch[supplier_id]' => $supplier->id]);
                 }
@@ -34,8 +34,8 @@ echo \panix\engine\grid\GridView::widget([
             'template' => '{reload}',
             'buttons' => [
                 'reload' => function ($url, $model) {
-                    //if ($model->forsage_id) {
-                    //    return Html::a(Html::icon('refresh'), ['supplier-load-products', 'id' => $model->forsage_id], ['title' => 'Reload products', 'class' => 'btn btn-sm btn-outline-primary', 'data-pjax' => 0]);
+                    //if ($model->external_id) {
+                    //    return Html::a(Html::icon('refresh'), ['supplier-load-products', 'id' => $model->external_id], ['title' => 'Reload products', 'class' => 'btn btn-sm btn-outline-primary', 'data-pjax' => 0]);
                     //}
 
                     if ($model['id']) {
