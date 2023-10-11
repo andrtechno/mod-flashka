@@ -56,50 +56,20 @@ class LoadController extends ConsoleController
      * @param $before_delete Delete before product
      * @return bool
      */
-    public function actionProduct($id, $before_delete = 0)
+    public function actionChanges($min)
     {
-        if ($before_delete) {
-            $p = Product::findOne(['external_id' => $id]);
-            $p->delete();
+        $changes = $this->fs->getChanges();
+        if ($changes) {
+            foreach ($changes['news'] as $change){
+                print_r($change);die;
+            }
         }
-        $product = $this->fs->getProduct($id);
-        //print_r($product->product);die;
-        //print_r($product->getProductProps($product->product));die;
-        if ($product) {
-            $response = $product->execute();
-        } else {
-            echo 'no open product';
-        }
-        return $response;
     }
 
     public static function log($mssage)
     {
         Yii::info($mssage);
     }
-
-    /**
-     * Экспорт всех поставщиков их контактов
-     * @param string $delimiter default ";"
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\httpclient\Exception
-     */
-    public function actionExportContacts($delimiter = ';')
-    {
-        $suppliers = $this->fs->getSuppliers();
-
-        foreach ($suppliers as $supplier) {
-            $list[] = [$supplier['company'], str_replace('+', '', CMS::phoneFormat($supplier['phone'])), $supplier['phone'], $supplier['email'], $supplier['address']];
-        }
-        asort($list);
-        $fp = fopen(Yii::getAlias('@runtime/') . 'suppliers_contact.csv', 'w');
-        fputcsv($fp, ['Имя', 'Телефон', 'Телефон формат', 'E-mail', 'Адрес'], $delimiter);
-        foreach ($list as $fields) {
-            fputcsv($fp, $fields, $delimiter);
-        }
-        fclose($fp);
-    }
-
 
 
 

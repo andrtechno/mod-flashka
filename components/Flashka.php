@@ -66,7 +66,7 @@ class Flashka extends Component
         if (!extension_loaded('intl')) {
             throw new ErrorException('PHP Extension intl not active.');
         }
-        $this->apiKey = '10f18db0-75a1-4cc3-a1cf-4a6e3993e12b'; //Yii::$app->settings->get('flashka', 'apikey');
+        $this->apiKey = 'd3953827-8964-41ee-af8b-52086869ff23'; //Yii::$app->settings->get('flashka', 'apikey');
         parent::__construct($config);
     }
 
@@ -1183,7 +1183,7 @@ class Flashka extends Component
      */
     public function getSupplierProductIds(int $supplier_id, $params = [])
     {
-        $response = $this->conn_curl('get_products_by_supplier/'.$supplier_id, $params);
+        $response = $this->conn_curl('get_products_by_supplier/' . $supplier_id, $params);
         if (isset($response['success'])) {
             if ($response['success'] == 'true') {
                 if ($response['product_ids']) {
@@ -1254,7 +1254,7 @@ class Flashka extends Component
     public function getProduct(int $product_id)
     {
 
-        $response = $this->conn_curl('get_product/'.$product_id, ['with_descriptions' => 1]);
+        $response = $this->conn_curl('get_product/' . $product_id, ['with_descriptions' => 1]);
         if (isset($response['success'])) {
             if ($response['success'] == 'true') {
                 if (in_array($response['product']['category']['id'], Yii::$app->getModule('forsage')->excludeCategories)) {
@@ -1276,7 +1276,7 @@ class Flashka extends Component
     public function getSuppliers()
     {
         $response = $this->conn_curl('get_suppliers');
-
+print_r($response);die;
         if (isset($response)) {
             if ($response['success'] == 'true') {
                 return $response['suppliers'];
@@ -1323,7 +1323,7 @@ class Flashka extends Component
     {
         $params['token'] = $this->apiKey;
 
-        $client = new Client(['baseUrl' => self::URL.$method]);
+        $client = new Client(['baseUrl' => self::URL . $method]);
         $response = $client->createRequest()
             // ->setFormat(Client::FORMAT_JSON)
             ->setMethod('GET')
@@ -1352,5 +1352,19 @@ class Flashka extends Component
     public function getInput()
     {
         return file_get_contents('php://input');
+    }
+
+    public function news_types()
+    {
+        return [
+            1 => 'Добавление нового товара',
+            2 => 'Изменение наличия товара',
+            3 => 'Изменение цены товара',
+            4 => 'Изменение фотографии товара',
+            5 => 'Изменение характеристик товара',
+            6 => 'Изменение курса поставщика',
+            7 => 'Изменение адреса поставщика',
+            9 => 'Изменение артикула товара'
+        ];
     }
 }

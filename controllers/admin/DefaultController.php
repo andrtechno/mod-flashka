@@ -47,7 +47,7 @@ class DefaultController extends AdminController
         //$dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         $suppliers = $this->fs->getSuppliers();
-
+var_dump($suppliers);die;
         $dataProvider = new ArrayDataProvider([
             'allModels' => $suppliers,
             'sort' => [

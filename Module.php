@@ -31,11 +31,14 @@ class Module extends WebModule implements BootstrapInterface
 
     public function bootstrap($app)
     {
-        $app->urlManager->addRules(
-            ['flashka/api/get_suppliers' => 'flashka/default/get-suppliers'],
-            ['flashka/api/get_suppliers2' => 'flashka/default/get-supplier2s'],
-            true
-        );
+        $rules['flashka/api/get_suppliers'] = 'flashka/default/get-suppliers';
+        $rules['flashka/api/get_brands'] = 'flashka/default/get-brands';
+        $rules['flashka/api/get_changes'] = 'flashka/default/get-changes';
+        $rules['flashka/api/get_products'] = 'flashka/default/get-products';
+        $rules['flashka/api/get_products_by_supplier/<id:\d+>'] = 'flashka/default/get-products-by-supplier';
+        $rules['flashka/api/get_product/<id:\d+>'] = 'flashka/default/get-product';
+
+        $app->urlManager->addRules($rules, true);
     }
 
     public function getAdminMenu()

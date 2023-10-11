@@ -17,6 +17,7 @@ use panix\mod\shop\models\Attribute;
 use panix\mod\shop\models\AttributeOption;
 use panix\mod\shop\models\ProductImage;
 use panix\mod\shop\models\Category;
+use panix\mod\flashka\models\Changes;
 
 class m200917_193214_flashka extends Migration
 {
@@ -25,9 +26,19 @@ class m200917_193214_flashka extends Migration
 
     public function up()
     {
+
+        $this->createTable(Changes::tableName(), [
+            'id' => $this->primaryKey()->unsigned(),
+            'change_id' => $this->integer()->unsigned(),
+            'type' => $this->smallInteger()->null(),
+            'product_ids' => $this->text(),
+            'datetime' => $this->string(50),
+            'provider_name' => $this->string(255),
+            'created_at' => $this->integer(11)->null(),
+            'updated_at' => $this->integer(11)->null(),
+        ]);
+
         $this->addColumn(Product::tableName(), 'external_id', $this->integer()->null());
-        //$this->addColumn(Product::tableName(), 'ukraine', $this->boolean()->defaultValue(0));
-        //$this->addColumn(Product::tableName(), 'leather', $this->boolean()->defaultValue(0));
         $this->addColumn(Supplier::tableName(), 'external_id', $this->integer()->null());
         $this->addColumn(Brand::tableName(), 'external_id', $this->integer()->null());
         $this->addColumn(Attribute::tableName(), 'external_id', $this->integer()->null());
@@ -43,10 +54,9 @@ class m200917_193214_flashka extends Migration
 
     public function down()
     {
+        $this->dropTable(Changes::tableName());
 
         $this->dropColumn(Product::tableName(), 'external_id');
-        //$this->dropColumn(Product::tableName(), 'ukraine');
-        //$this->dropColumn(Product::tableName(), 'leather');
         $this->dropColumn(Supplier::tableName(), 'external_id');
         $this->dropColumn(Brand::tableName(), 'external_id');
         $this->dropColumn(Attribute::tableName(), 'external_id');
